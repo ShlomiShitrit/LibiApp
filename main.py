@@ -21,11 +21,15 @@ class LibiApp(MDApp):
     def build(self):
         login_screen = LoginPage()
         todo_screen = ToDoScreen()
-
-        self.sm.add_widget(login_screen)
-
+        self.screen_manager.add_widget(todo_screen)
         return self.screen_manager
     
 
+def main():
+    """
+    The main function
+    """
+    LibiApp().run()
 
-LibiApp().run()
+if __name__ == "__main__":
+    main()

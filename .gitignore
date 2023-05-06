@@ -6,3 +6,6 @@ __pycache__
 code
 extras
 images
+.venv
+.vscode
+todo_page2.py
