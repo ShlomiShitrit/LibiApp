@@ -1,9 +1,13 @@
+"""
+Module for login screen
+"""
+
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
-from kivy.uix.image import Image
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.button.button import MDFillRoundFlatButton, MDFillRoundFlatIconButton
 from kivymd.uix.label import MDLabel
+from kivy.uix.image import Image
 
 
 class SecondaryLayout(MDFloatLayout):

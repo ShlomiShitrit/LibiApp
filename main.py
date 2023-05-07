@@ -1,6 +1,10 @@
+"""
+The main module
+"""
+
 from kivymd.app import MDApp
-from kivy.core.window import Window
 from kivymd.uix.screenmanager import MDScreenManager
+from kivy.core.window import Window
 
 from login_page import LoginPage
 from todo_page import ToDoScreen
@@ -22,6 +26,7 @@ class LibiApp(MDApp):
         login_screen = LoginPage()
         todo_screen = ToDoScreen()
         self.screen_manager.add_widget(todo_screen)
+        self.screen_manager.add_widget(login_screen)
         return self.screen_manager
     
 
@@ -33,3 +38,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
