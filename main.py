@@ -14,6 +14,7 @@ class LibiApp(MDApp):
     """
     class for Main app
     """
+
     def __init__(self):
         super().__init__()
         Window.size = (350, 600)
@@ -23,12 +24,12 @@ class LibiApp(MDApp):
         self.screen_manager = MDScreenManager()
 
     def build(self):
-        login_screen = LoginPage()
+        login_screen = LoginPage(self)
         todo_screen = ToDoScreen()
-        self.screen_manager.add_widget(todo_screen)
         self.screen_manager.add_widget(login_screen)
+        self.screen_manager.add_widget(todo_screen)
         return self.screen_manager
-    
+
 
 def main():
     """
@@ -36,8 +37,6 @@ def main():
     """
     LibiApp().run()
 
+
 if __name__ == "__main__":
     main()
-
-
-

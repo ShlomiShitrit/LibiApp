@@ -1,62 +1,18 @@
 """
 Module for login screen
 """
+import json
+import requests
+
+import firebase_admin
+from firebase_admin import credentials, auth
+from firebase_admin._auth_utils import EmailAlreadyExistsError
 
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button.button import MDFillRoundFlatButton, MDFillRoundFlatIconButton
-from kivymd.uix.label import MDLabel
 from kivy.uix.image import Image
 
-
-class SecondaryLayout(MDFloatLayout):
-    """
-    class for secondary layout
-    """
-
-    def __init__(
-        self,
-        id_str: str,
-        h_txt: str,
-        pos_lay_xy: tuple,
-        pos_txt_xy: tuple,
-        is_password: bool,
-    ):
-        super().__init__()
-        self.size_hint = (0.85, 0.08)
-        self.pos_hint = {"center_x": pos_lay_xy[0], "center_y": pos_lay_xy[1]}
-
-        email_text_field = MDTextField(
-            id=id_str,
-            hint_text=h_txt,
-            mode="rectangle",
-            size_hint=(1, None),
-            pos_hint={"center_x": pos_txt_xy[0], "center_y": pos_txt_xy[1]},
-            password=is_password,
-            cursor_color=(57 / 255, 66 / 255, 143 / 255, 1),
-            cursor_width="2sp",
-            padding=15,
-            font_size="18sp",
-            error_color=(66 / 255, 135 / 255, 245 / 255, 1),
-            required=True,
-        )
-        self.add_widget(email_text_field)
-
-
-class LoginPageBtn(MDFillRoundFlatButton):
-    """
-    class for button for login page
-    """
-
-    def __init__(self, txt: str, pos_xy: tuple):
-        super().__init__()
-
-        self.text = txt
-        self.font_size = "18sp"
-        self.size_hint = (0.4, 0.08)
-        self.pos_hint = {"center_x": pos_xy[0], "center_y": pos_xy[1]}
-        self.md_bg_color = (20 / 255, 100 / 255, 105 / 255, 1)
+from login_comp import SecondaryLayout, LoginPageBtn, OrLabel, GoogleBtn, LoginDialog
 
 
 class LoginPage(MDScreen):
@@ -64,9 +20,18 @@ class LoginPage(MDScreen):
     class for screen of login page
     """
 
-    def __init__(self):
+    def __init__(self, main_app):
         super().__init__()
         self.name = "login"
+        self.main_app = main_app
+
+        self.firebase_sdk = "libiapp-sdk.json"
+        cred = credentials.Certificate(self.firebase_sdk)
+        firebase_admin.initialize_app(cred)
+        self.api_key = "AIzaSyCQMv_9uYn9QI6la9sRJVqL7AyrqanUdLk"
+        self.api_auth = (
+            "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword"
+        )
 
         main_layout = MDFloatLayout(md_bg_color=(51 / 255, 163 / 255, 152 / 255, 1))
         self.add_widget(main_layout)
@@ -76,14 +41,14 @@ class LoginPage(MDScreen):
             pos_hint={"center_x": 0.5, "center_y": 0.78},
         )
 
-        sec_layout1 = SecondaryLayout(
+        self.email_layout = SecondaryLayout(
             id_str="email",
             h_txt="Email",
             pos_lay_xy=(0.5, 0.52),
             pos_txt_xy=(0.5, 0.6),
             is_password=False,
         )
-        sec_layout2 = SecondaryLayout(
+        self.password_layout = SecondaryLayout(
             id_str="password",
             h_txt="Password",
             pos_lay_xy=(0.5, 0.41),
@@ -97,38 +62,66 @@ class LoginPage(MDScreen):
         login_button.bind(on_release=lambda x: self.user_login(self))
         signup_button.bind(on_release=lambda x: self.user_signup(self))
 
-        or_label = MDLabel(
-            text="OR",
-            pos_hint={"center_x": 0.5, "center_y": 0.2},
-            font_size="16sp",
-            halign="center",
-        )
+        or_label = OrLabel()
+        third_layout = MDFloatLayout(pos_hint={"center_x": 0.5, "center_y": 0.1})
+        google_btn = GoogleBtn()
 
-        sec_layout3 = MDFloatLayout(pos_hint={"center_x": 0.5, "center_y": 0.1})
-        google_btn = MDFillRoundFlatIconButton(
-            icon="google",
-            text="Sign in with Google",
-            size_hint=(0.5, 0.05),
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
-            md_bg_color=(20 / 255, 100 / 255, 105 / 255, 1),
-        )
+        third_layout.add_widget(google_btn)
 
-        sec_layout3.add_widget(google_btn)
         main_layout_widgets_tup = (
             login_image,
-            sec_layout1,
-            sec_layout2,
+            self.email_layout,
+            self.password_layout,
             login_button,
             signup_button,
             or_label,
-            sec_layout3,
+            third_layout,
         )
 
         for widget in main_layout_widgets_tup:
             main_layout.add_widget(widget)
 
     def user_login(self, obj):
-        print("Login")
+        """
+        func for login user
+        """
+        payload = json.dumps(
+            {
+                "email": self.email_layout.text_field.text,
+                "password": self.password_layout.text_field.text,
+                "returnSecureToken": True,
+            }
+        )
+        try:
+            response = requests.post(
+                self.api_auth, params={"key": self.api_key}, data=payload, timeout=5
+            )
+            if response.status_code != 200:
+                raise requests.exceptions.RequestException
+        except requests.exceptions.RequestException:
+            self.login_dialog_box(msg_text="Email or password is incorrect")
+        else:
+            self.main_app.screen_manager.current = "todo"
 
     def user_signup(self, obj):
-        print("Sign Up")
+        """
+        func for signup user
+        """
+        try:
+            auth.create_user(
+                email=self.email_layout.text_field.text,
+                password=self.password_layout.text_field.text,
+            )
+        except EmailAlreadyExistsError:
+            self.login_dialog_box(msg_text="Email already exists")
+        except ValueError:
+            self.login_dialog_box(msg_text="password must be at least 6 characters")
+        else:
+            self.login_dialog_box(msg_text="User created successfully", box_title="Info")
+
+    def login_dialog_box(self, msg_text, box_title="Error"):
+        """
+        func for login dialog box
+        """
+        login_box = LoginDialog(msg_text=msg_text, box_title=box_title)
+        login_box.open()
