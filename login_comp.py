@@ -7,6 +7,30 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 
 
+class TextInputCustom(MDTextField):
+    """
+    class for custom text input
+    """
+
+    def __init__(self, h_txt: str, pos_txt_xy: tuple, is_password: bool, color="black"):
+        super().__init__()
+
+        self.hint_text = h_txt
+        self.text_color_focus = color
+        self.hint_text_color_focus = color
+        self.line_color_focus = color
+        self.mode = "rectangle"
+        self.size_hint = (1, None)
+        self.pos_hint = {"center_x": pos_txt_xy[0], "center_y": pos_txt_xy[1]}
+        self.password = is_password
+        self.cursor_color = "red"
+        self.cursor_width = "2sp"
+        self.padding = 15
+        self.font_size = "18sp"
+        self.error_color = color
+        self.required = True
+
+
 class SecondaryLayout(MDFloatLayout):
     """
     class for secondary layout
@@ -14,7 +38,6 @@ class SecondaryLayout(MDFloatLayout):
 
     def __init__(
         self,
-        id_str: str,
         h_txt: str,
         pos_lay_xy: tuple,
         pos_txt_xy: tuple,
@@ -24,23 +47,7 @@ class SecondaryLayout(MDFloatLayout):
         self.size_hint = (0.85, 0.08)
         self.pos_hint = {"center_x": pos_lay_xy[0], "center_y": pos_lay_xy[1]}
 
-        self.text_field = MDTextField(
-            id=id_str,
-            hint_text=h_txt,
-            text_color_focus="black",
-            hint_text_color_focus="black",
-            line_color_focus="black",
-            mode="rectangle",
-            size_hint=(1, None),
-            pos_hint={"center_x": pos_txt_xy[0], "center_y": pos_txt_xy[1]},
-            password=is_password,
-            cursor_color="red",
-            cursor_width="2sp",
-            padding=15,
-            font_size="18sp",
-            error_color="black",
-            required=True,
-        )
+        self.text_field = TextInputCustom(h_txt, pos_txt_xy, is_password)
         self.add_widget(self.text_field)
 
 
@@ -98,7 +105,7 @@ class PopupLabel(Label):
         self.text_size = self.size
 
 
-class DialogContent(MDBoxLayout):
+class PopupContent(MDBoxLayout):
     """
     class for dialog content
     """
@@ -121,7 +128,7 @@ class DialogContent(MDBoxLayout):
         self.close_error_button.bind(on_release=login_popup.dismiss)
 
 
-class LoginDialog(Popup):
+class LoginPopup(Popup):
     """
     class for error dialog box in login page
     """
@@ -130,4 +137,39 @@ class LoginDialog(Popup):
         super().__init__()
         self.size_hint = (0.7, 0.3)
         self.title = box_title
-        self.add_widget(DialogContent(msg_txt=msg_text, login_popup=self))
+        self.add_widget(PopupContent(msg_txt=msg_text, login_popup=self))
+
+
+class SignupPopup(Popup):
+    """
+    class for signup popup
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.size_hint = (0.7, 0.7)
+        self.title = "Sign Up"
+        main_layout = MDBoxLayout(orientation="vertical", spacing=15)
+        self.add_widget(main_layout)
+
+        self.fname_text = TextInputCustom("First Name", (0.5, 0.7), False, color='cyan')
+        self.lname_text = TextInputCustom("Last Name", (0.5, 0.7), False, color='cyan')
+        self.email_text = TextInputCustom("Email", (0.5, 0.7), False, color='cyan')
+        self.password_text = TextInputCustom("Password", (0.5, 0.7), True, color='cyan')
+        self.confirm_btn = MDFillRoundFlatButton(
+            text="Confirm",
+            font_size="18sp",
+            size_hint=(None, None),
+            size=(150, 50),
+            pos_hint={"center_x": 0.75},
+        )
+
+        widgets_tup = (
+            self.fname_text,
+            self.lname_text,
+            self.email_text,
+            self.password_text,
+            self.confirm_btn,
+        )
+        for widget in widgets_tup:
+            main_layout.add_widget(widget)
