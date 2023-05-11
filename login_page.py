@@ -117,7 +117,9 @@ class LoginPage(MDScreen):
         except ValueError:
             self.login_dialog_box(msg_text="password must be at least 6 characters")
         else:
-            self.login_dialog_box(msg_text="User created successfully", box_title="Info")
+            self.login_dialog_box(
+                msg_text="User created successfully", box_title="Info"
+            )
 
     def login_dialog_box(self, msg_text, box_title="Error"):
         """

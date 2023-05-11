@@ -18,9 +18,6 @@ class LibiApp(MDApp):
     def __init__(self):
         super().__init__()
         Window.size = (350, 600)
-        self.firebase_url = (
-            "https://libiapp-14bee-default-rtdb.firebaseio.com/Users/.json"
-        )
         self.screen_manager = MDScreenManager()
 
     def build(self):

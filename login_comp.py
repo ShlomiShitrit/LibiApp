@@ -1,7 +1,6 @@
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button.button import MDFillRoundFlatButton, MDFillRoundFlatIconButton
 from kivymd.uix.label import MDLabel
 from kivy.uix.popup import Popup
@@ -130,6 +129,5 @@ class LoginDialog(Popup):
     def __init__(self, msg_text: str, box_title: str):
         super().__init__()
         self.size_hint = (0.7, 0.3)
-        pos_hint = {"center_x": 0.2, "center_y": 0.9}
         self.title = box_title
         self.add_widget(DialogContent(msg_txt=msg_text, login_popup=self))
