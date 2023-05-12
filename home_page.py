@@ -3,7 +3,11 @@ Module for the home page of the application
 """
 
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.boxlayout import MDBoxLayout
+
+from home_comp import HelloLabel
+
 
 class HomePage(MDScreen):
     """
@@ -15,6 +19,12 @@ class HomePage(MDScreen):
         self.name = "home"
         self.user_name_tup = user_name_tup
         self.md_bg_color = (51 / 255, 163 / 255, 152 / 255, 1)
+        main_layout = MDBoxLayout(
+            orientation="vertical", padding="10dp", spacing="10dp"
+        )
+        sec_layout = MDFloatLayout()
+        main_layout.add_widget(sec_layout)
+        self.add_widget(main_layout)
 
-        self.hello_label = MDLabel(text=f"Hello, {self.user_name_tup[0]} {self.user_name_tup[1]}!", halign="center")
+        self.hello_label = HelloLabel(name_tup=self.user_name_tup, font_style="H2")
         self.add_widget(self.hello_label)

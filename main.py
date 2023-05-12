@@ -29,6 +29,7 @@ class LibiApp(MDApp):
         self.screen_manager.add_widget(login_screen)
         self.screen_manager.add_widget(todo_screen)
         self.screen_manager.add_widget(self.home_screen)
+        self.screen_manager.current = "home"
         return self.screen_manager
 
 

@@ -33,7 +33,7 @@ class LoginPage(MDScreen):
         self.main_app = main_app
         self.user = None
         self.signup_popup = None
-        self.user_name_tup = (1, 1)
+        self.user_name_tup = ("Libi", "Moryosef")
 
         self.firebase_sdk = "libiapp-sdk.json"
         self.realtime_db = "https://libiapp-14bee-default-rtdb.firebaseio.com/"
