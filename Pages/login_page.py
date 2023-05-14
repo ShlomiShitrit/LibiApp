@@ -12,7 +12,7 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 from kivy.uix.image import Image
 
-from login_comp import (
+from Components.login_comp import (
     SecondaryLayout,
     LoginPageBtn,
     OrLabel,

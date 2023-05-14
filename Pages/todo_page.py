@@ -8,7 +8,7 @@ from kivymd.uix.list import MDList
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.screen import MDScreen
 
-from todo_comp import ListItemWithCheckbox, SaveBtn, TaskText
+from Components.todo_comp import ListItemWithCheckbox, SaveBtn, TaskText
 
 
 class ToDoScreen(MDScreen):

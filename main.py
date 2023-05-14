@@ -6,9 +6,9 @@ from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from kivy.core.window import Window
 
-from login_page import LoginPage
-from todo_page import ToDoScreen
-from home_page import HomePage
+from Pages.login_page import LoginPage
+from Pages.todo_page import ToDoScreen
+from Pages.home_page import HomePage
 
 
 class LibiApp(MDApp):
