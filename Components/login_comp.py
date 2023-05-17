@@ -6,6 +6,56 @@ from kivymd.uix.label import MDLabel
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 
+from Constants.login_constants import (
+    TEXT_INPUT_SIZE_HINT,
+    TEXT_INPUT_PADDING,
+    SEC_LAYOUT_SIZE_HINT,
+    LOGIN_BTN_SIZE_HINT,
+    LOGIN_BTN_BG_COLOR,
+    OR_LABEL_CX,
+    OR_LABEL_CY,
+    GOOGLE_BTN_SIZE_HINT,
+    GOOGLE_BTN_BG_COLOR,
+    GOOGLE_BTN_CX,
+    GOOGLE_BTN_CY,
+    POPUP_CONTENT_SIZE_HINT,
+    POPUP_CONTENT_SPACING,
+    POPUP_CONTENT_CLOSE_BTN_SIZE_HINT,
+    POPUP_CONTENT_CLOSE_BTN_CX,
+    POPUP_CONTENT_CLOSE_BTN_CY,
+    LOGIN_POPUP_SIZE_HINT,
+    SIGNUP_POPUP_SIZE_HINT,
+    SIGNUP_POPUP_MAIN_LAYOUT_SPACING,
+    SIGNUP_POPUP_TXT_INPUT_SIZE_HINT,
+    SIGNUP_POPUP_CONFIRM_BTN_SIZE,
+    SIGNUP_POPUP_CONFIRM_BTN_CX,
+)
+
+from Resources.login_resources import (
+    TEXT_INPUT_MODE,
+    TEXT_INPUT_CURSOR_COLOR,
+    TEXT_INPUT_CURSOR_WIDTH,
+    TEXT_INPUT_FONT_SIZE,
+    LOGIN_BTN_FONT_SIZE,
+    OR_LABRL_TXT,
+    OR_LABEL_FONT_SIZE,
+    OR_LABEL_HALIGN,
+    GOOGLE_BTN_ICON,
+    GOOGLE_BTN_TXT,
+    POPUP_CONTENT_ORIENTATION,
+    POPUP_CONTENT_CLOSE_BTN_TXT,
+    POPUP_CONTENT_CLOSE_BTN_FONT_SIZE,
+    SIGNUP_POPUP_TITLE,
+    SIGNUP_POPUP_MAIN_LAYOUT_ORIENTATION,
+    SIGNUP_POPUP_FNAME_TXT,
+    SIGNUP_POPUP_LNAME_TXT,
+    SIGNUP_POPUP_EMAIL_TXT,
+    SIGNUP_POPUP_PASSWORD_TXT,
+    SIGNUP_POPUP_TEXT_INPUT_COLOR,
+    SIGNUP_POPUP_CONFIRM_BTN_TXT,
+    SIGNUP_POPUP_CONFIRM_BTN_FONT_SIZE,
+)
+
 
 class TextInputCustom(MDTextField):
     """
@@ -19,14 +69,14 @@ class TextInputCustom(MDTextField):
         self.text_color_focus = color
         self.hint_text_color_focus = color
         self.line_color_focus = color
-        self.mode = "rectangle"
-        self.size_hint = (1, None)
+        self.mode = TEXT_INPUT_MODE
+        self.size_hint = TEXT_INPUT_SIZE_HINT
         self.pos_hint = {"center_x": pos_txt_xy[0], "center_y": pos_txt_xy[1]}
         self.password = is_password
-        self.cursor_color = "red"
-        self.cursor_width = "2sp"
-        self.padding = 15
-        self.font_size = "18sp"
+        self.cursor_color = TEXT_INPUT_CURSOR_COLOR
+        self.cursor_width = TEXT_INPUT_CURSOR_WIDTH
+        self.padding = TEXT_INPUT_PADDING
+        self.font_size = TEXT_INPUT_FONT_SIZE
         self.error_color = color
         self.required = True
 
@@ -44,7 +94,7 @@ class SecondaryLayout(MDFloatLayout):
         is_password: bool,
     ):
         super().__init__()
-        self.size_hint = (0.85, 0.08)
+        self.size_hint = SEC_LAYOUT_SIZE_HINT
         self.pos_hint = {"center_x": pos_lay_xy[0], "center_y": pos_lay_xy[1]}
 
         self.text_field = TextInputCustom(h_txt, pos_txt_xy, is_password)
@@ -60,10 +110,10 @@ class LoginPageBtn(MDFillRoundFlatButton):
         super().__init__()
 
         self.text = txt
-        self.font_size = "18sp"
-        self.size_hint = (0.4, 0.08)
+        self.font_size = LOGIN_BTN_FONT_SIZE
+        self.size_hint = LOGIN_BTN_SIZE_HINT
         self.pos_hint = {"center_x": pos_xy[0], "center_y": pos_xy[1]}
-        self.md_bg_color = (20 / 255, 100 / 255, 105 / 255, 1)
+        self.md_bg_color = LOGIN_BTN_BG_COLOR
 
 
 class OrLabel(MDLabel):
@@ -73,10 +123,10 @@ class OrLabel(MDLabel):
 
     def __init__(self):
         super().__init__()
-        self.text = "OR"
-        self.pos_hint = {"center_x": 0.5, "center_y": 0.2}
-        self.font_size = "16sp"
-        self.halign = "center"
+        self.text = OR_LABRL_TXT
+        self.pos_hint = {"center_x": OR_LABEL_CX, "center_y": OR_LABEL_CY}
+        self.font_size = OR_LABEL_FONT_SIZE
+        self.halign = OR_LABEL_HALIGN
 
 
 class GoogleBtn(MDFillRoundFlatIconButton):
@@ -86,11 +136,11 @@ class GoogleBtn(MDFillRoundFlatIconButton):
 
     def __init__(self):
         super().__init__()
-        self.icon = "google"
-        self.text = "Sign in with Google"
-        self.size_hint = (0.5, 0.05)
-        self.pos_hint = {"center_x": 0.5, "center_y": 0.5}
-        self.md_bg_color = (20 / 255, 100 / 255, 105 / 255, 1)
+        self.icon = GOOGLE_BTN_ICON
+        self.text = GOOGLE_BTN_TXT
+        self.size_hint = GOOGLE_BTN_SIZE_HINT
+        self.pos_hint = {"center_x": GOOGLE_BTN_CX, "center_y": GOOGLE_BTN_CY}
+        self.md_bg_color = GOOGLE_BTN_BG_COLOR
 
 
 class PopupLabel(Label):
@@ -112,17 +162,20 @@ class PopupContent(MDBoxLayout):
 
     def __init__(self, msg_txt: str, login_popup: Popup):
         super().__init__()
-        self.orientation = "vertical"
-        self.size_hint = (0.7, 0.7)
-        self.spacing = 30
+        self.orientation = POPUP_CONTENT_ORIENTATION
+        self.size_hint = POPUP_CONTENT_SIZE_HINT
+        self.spacing = POPUP_CONTENT_SPACING
         self.label = PopupLabel(text=msg_txt)
         self.add_widget(self.label)
 
         self.close_error_button = MDFillRoundFlatButton(
-            text="Close",
-            font_size="18sp",
-            size_hint=(0.4, 0.08),
-            pos_hint={"center_x": 0.8, "center_y": 0.2},
+            text=POPUP_CONTENT_CLOSE_BTN_TXT,
+            font_size=POPUP_CONTENT_CLOSE_BTN_FONT_SIZE,
+            size_hint=POPUP_CONTENT_CLOSE_BTN_SIZE_HINT,
+            pos_hint={
+                "center_x": POPUP_CONTENT_CLOSE_BTN_CX,
+                "center_y": POPUP_CONTENT_CLOSE_BTN_CY,
+            },
         )
         self.add_widget(self.close_error_button)
         self.close_error_button.bind(on_release=login_popup.dismiss)
@@ -135,7 +188,7 @@ class LoginPopup(Popup):
 
     def __init__(self, msg_text: str, box_title: str):
         super().__init__()
-        self.size_hint = (0.7, 0.3)
+        self.size_hint = LOGIN_POPUP_SIZE_HINT
         self.title = box_title
         self.add_widget(PopupContent(msg_txt=msg_text, login_popup=self))
 
@@ -147,21 +200,44 @@ class SignupPopup(Popup):
 
     def __init__(self):
         super().__init__()
-        self.size_hint = (0.7, 0.7)
-        self.title = "Sign Up"
-        main_layout = MDBoxLayout(orientation="vertical", spacing=15)
+        self.size_hint = SIGNUP_POPUP_SIZE_HINT
+        self.title = SIGNUP_POPUP_TITLE
+        main_layout = MDBoxLayout(
+            orientation=SIGNUP_POPUP_MAIN_LAYOUT_ORIENTATION,
+            spacing=SIGNUP_POPUP_MAIN_LAYOUT_SPACING,
+        )
         self.add_widget(main_layout)
 
-        self.fname_text = TextInputCustom("First Name", (0.5, 0.7), False, color='cyan')
-        self.lname_text = TextInputCustom("Last Name", (0.5, 0.7), False, color='cyan')
-        self.email_text = TextInputCustom("Email", (0.5, 0.7), False, color='cyan')
-        self.password_text = TextInputCustom("Password", (0.5, 0.7), True, color='cyan')
+        self.fname_text = TextInputCustom(
+            SIGNUP_POPUP_FNAME_TXT,
+            SIGNUP_POPUP_TXT_INPUT_SIZE_HINT,
+            False,
+            color=SIGNUP_POPUP_TEXT_INPUT_COLOR,
+        )
+        self.lname_text = TextInputCustom(
+            SIGNUP_POPUP_LNAME_TXT,
+            SIGNUP_POPUP_TXT_INPUT_SIZE_HINT,
+            False,
+            color=SIGNUP_POPUP_TEXT_INPUT_COLOR,
+        )
+        self.email_text = TextInputCustom(
+            SIGNUP_POPUP_EMAIL_TXT,
+            SIGNUP_POPUP_TXT_INPUT_SIZE_HINT,
+            False,
+            color=SIGNUP_POPUP_TEXT_INPUT_COLOR,
+        )
+        self.password_text = TextInputCustom(
+            SIGNUP_POPUP_PASSWORD_TXT,
+            SIGNUP_POPUP_TXT_INPUT_SIZE_HINT,
+            True,
+            color=SIGNUP_POPUP_TEXT_INPUT_COLOR,
+        )
         self.confirm_btn = MDFillRoundFlatButton(
-            text="Confirm",
-            font_size="18sp",
+            text=SIGNUP_POPUP_CONFIRM_BTN_TXT,
+            font_size=SIGNUP_POPUP_CONFIRM_BTN_FONT_SIZE,
             size_hint=(None, None),
-            size=(150, 50),
-            pos_hint={"center_x": 0.75},
+            size=SIGNUP_POPUP_CONFIRM_BTN_SIZE,
+            pos_hint={"center_x": SIGNUP_POPUP_CONFIRM_BTN_CX},
         )
 
         widgets_tup = (
