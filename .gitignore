@@ -1,11 +1,6 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-.idea
 __pycache__
-code
-extras
-images
 .venv
 .vscode
-todo_page2.py
