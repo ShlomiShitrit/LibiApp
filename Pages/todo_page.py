@@ -5,12 +5,35 @@ from kivy.metrics import dp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.datatables import MDDataTable
+from kivymd.uix.dropdownitem import MDDropDownItem  
+from kivymd.uix.menu import MDDropdownMenu
 
-from Components.todo_comp import AddRowBtn, AddRowPopup
+
+from Components.todo_comp import (
+    AddRowBtn,
+    AddRowPopup,
+    StatusDropDownMenu,
+    StatusDropDownItem,
+)
 from Components.general_comp import NavLayout
 
 
-from Resources.todo_resources import TOP_BAR_TITLE
+from Resources.todo_resources import (
+    TOP_BAR_TITLE,
+    SCREEN_NAME,
+    COLS_NAMES_TUP,
+    STATUS_COL_DEFAULT,
+)
+
+from Constants.todo_constants import (
+    ROW_COUNTER_START,
+    MAIN_LAYOUT_BG_COLOR,
+    DATA_TABLE_DP_COLS_TUP,
+    DATA_TABLE_CX,
+    DATA_TABLE_CY,
+    DATA_TABLE_SIZE_HINT,
+    ROW_COUNTER_ADDER,
+)
 
 
 class ToDoScreen(MDScreen):
@@ -20,22 +43,44 @@ class ToDoScreen(MDScreen):
 
     def __init__(self, main_app, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.name = "todo"
-        self.row_counter = 1
+        self.name = SCREEN_NAME
+        self.row_counter = ROW_COUNTER_START
         self.row_popup = None
 
-        main_layout = MDFloatLayout(md_bg_color=(51 / 255, 163 / 255, 152 / 255, 1))
+        self.status_item = MDDropDownItem()
+        self.status_list = [
+                {
+                    "text": "Done",
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x: self.set_item(x),
+                },
+                {
+                    "text": "In Progress",
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x: self.set_item(x),
+                },
+                {
+                    "text": "Not Started",
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x: self.set_item(x),
+                },
+            ]
+        
+
+        self.status_menu = MDDropdownMenu(items=self.status_list, caller=self.status_item, width_mult=4, radius=[0, 0, 0, 0,])
+
+        main_layout = MDFloatLayout(md_bg_color=MAIN_LAYOUT_BG_COLOR)
         self.add_widget(main_layout)
 
         self.data_table = MDDataTable(
             column_data=[
-                ("No.", dp(20)),
-                ("Task", dp(15)),
-                ("Status", dp(15)),
-                ("Date", dp(15)),
+                (COLS_NAMES_TUP[0], dp(DATA_TABLE_DP_COLS_TUP[0])),
+                (COLS_NAMES_TUP[1], dp(DATA_TABLE_DP_COLS_TUP[1])),
+                (COLS_NAMES_TUP[2], dp(DATA_TABLE_DP_COLS_TUP[2])),
+                (COLS_NAMES_TUP[3], dp(DATA_TABLE_DP_COLS_TUP[3])),
             ],
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
-            size_hint=(0.9, 0.7),
+            pos_hint={"center_x": DATA_TABLE_CX, "center_y": DATA_TABLE_CY},
+            size_hint=DATA_TABLE_SIZE_HINT,
             use_pagination=True,
             check=True,
         )
@@ -60,10 +105,17 @@ class ToDoScreen(MDScreen):
             )
         )
 
-    def add_row(self, task_name, date, status="Pending"):
+    def add_row(self, task_name, date):
         """
         func to add row to data table
         """
-        self.data_table.add_row((self.row_counter, task_name, status, date))
-        self.row_counter += 1
-        # self.row_popup.dismiss()
+        self.data_table.add_row((self.row_counter, task_name, self.status_item, date))
+        self.row_counter += ROW_COUNTER_ADDER
+        self.row_popup.dismiss()
+    
+    def set_item(self, text_item):
+        """
+        set item for drop down
+        """
+        self.status_item.set_item(text_item)
+        self.status_menu.dismiss()

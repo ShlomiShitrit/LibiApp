@@ -1,0 +1,36 @@
+"""
+Module for constants used in the todo page
+"""
+
+### to do components ###
+
+# AddRowBtn
+ADD_ROW_BTN_SIZE_HINT = (0.4, 0.08)
+ADD_ROW_BTN_CX = 0.72
+ADD_ROW_BTN_CY = 0.07
+
+# TextInputCustom
+TEXT_INPUT_SIZE_HINT = (1, None)
+TEXT_INPUT_PADDING = 15
+
+# AddRowPopup
+POPUP_SIZE_HINT = (0.7, 0.7)
+POPUP_MAIN_LAYOUT_SPACING = 15
+POPUP_MAIN_LAYOUT_CX = 0.5
+POPUP_MAIN_LAYOUT_CY = 0.5
+POPUP_CONFIRM_BTN_SIZE = (150, 50)
+POPUP_CONFIRM_BTN_CX = 0.75
+
+
+### to do page ###
+
+# func init
+ROW_COUNTER_START = 1
+MAIN_LAYOUT_BG_COLOR = (51 / 255, 163 / 255, 152 / 255, 1)
+DATA_TABLE_DP_COLS_TUP = (20, 15, 15, 15)
+DATA_TABLE_CX = 0.5
+DATA_TABLE_CY = 0.5
+DATA_TABLE_SIZE_HINT = (0.9, 0.7)
+
+# func add_row
+ROW_COUNTER_ADDER = 1
