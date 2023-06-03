@@ -4,3 +4,7 @@
 __pycache__
 .venv
 .vscode
+libiapp-sdk.json
+.env
+.devcontainer
+firebase_sdk

@@ -1,8 +1,11 @@
 """
 Module for login screen
 """
+import os
 import json
 import requests
+
+from dotenv import load_dotenv
 
 import firebase_admin
 from firebase_admin import credentials, auth, db
@@ -12,7 +15,6 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
 
 from kivy.uix.image import Image
-
 
 
 from Components.login_comp import (
@@ -46,9 +48,6 @@ from Resources.login_resources import (
     LP_NAME,
     LP_USER_NAME_TUP,
     LP_FIREBASE_SDK_PATH,
-    LP_FIREBASE_DB_URL,
-    LP_API_KEY,
-    LP_API_AUTH,
     LOGIN_IMAGE_PATH,
     EMAIL_LAYOUT_HINT_TXT,
     PASSWORD_LAYOUT_HINT_TXT,
@@ -63,6 +62,8 @@ from Resources.login_resources import (
     SIGNUP_SUCCESS_BOX_TITLE,
     BOX_TITLE_DEFAULT,
 )
+
+load_dotenv()
 
 
 class LoginPage(MDScreen):
@@ -79,11 +80,11 @@ class LoginPage(MDScreen):
         self.user_name_tup = LP_USER_NAME_TUP
 
         self.firebase_sdk = LP_FIREBASE_SDK_PATH
-        self.realtime_db = LP_FIREBASE_DB_URL
+        self.realtime_db = os.getenv("FIREBASE_DB_URL")
         cred = credentials.Certificate(self.firebase_sdk)
         firebase_admin.initialize_app(cred, {"databaseURL": self.realtime_db})
-        self.api_key = LP_API_KEY
-        self.api_auth = LP_API_AUTH
+        self.api_key = os.getenv("FIREBASE_API_KEY")
+        self.api_auth = os.getenv("FIREBASE_API_AUTH")
 
         main_layout = MDFloatLayout(md_bg_color=LP_MAIN_LAYOUT_BG_COLOR)
         self.add_widget(main_layout)
@@ -132,7 +133,6 @@ class LoginPage(MDScreen):
 
         for widget in main_layout_widgets_tup:
             main_layout.add_widget(widget)
-
 
     def user_login(self, obj):
         """

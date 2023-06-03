@@ -2,6 +2,10 @@
 Module for storing login page resources
 """
 
+
+from firebase_functions import https_fn
+from firebase_functions.params import IntParam, StringParam
+
 ### login components ###
 
 # TextInputCustom
@@ -47,10 +51,8 @@ SIGNUP_POPUP_CONFIRM_BTN_FONT_SIZE = "18sp"
 
 LP_NAME = "login"
 LP_USER_NAME_TUP = ("Libi", "Moryosef")
-LP_FIREBASE_SDK_PATH = "libiapp-sdk.json"
-LP_FIREBASE_DB_URL = "https://libiapp-14bee-default-rtdb.firebaseio.com/"
-LP_API_KEY = "AIzaSyCQMv_9uYn9QI6la9sRJVqL7AyrqanUdLk"
-LP_API_AUTH = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword"
+
+LP_FIREBASE_SDK_PATH = "firebase_sdk/libiapp-sdk.json"
 
 LOGIN_IMAGE_PATH = "../images/login4.png"
 EMAIL_LAYOUT_HINT_TXT = "Email"
@@ -75,14 +77,3 @@ SIGNUP_SUCCESS_BOX_TITLE = "Info"
 
 # func login_dialog_box
 BOX_TITLE_DEFAULT = "Error"
-
-
-
-
-
-
-
-
-
-
-

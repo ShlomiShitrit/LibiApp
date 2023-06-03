@@ -2,6 +2,8 @@
 The main module
 """
 
+import os
+
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from kivy.core.window import Window
@@ -23,6 +25,9 @@ class LibiApp(MDApp):
         self.theme_cls.primary_palette = "Teal"
         self.screen_manager = MDScreenManager()
         self.home_screen = None
+        print(os.getenv("FIREBASE_API_KEY"))
+        print(os.getenv("FIREBASE_API_AUTH"))
+        print(os.getenv("FIREBASE_DB_URL"))
 
     def build(self):
         login_screen = LoginPage(self)
@@ -33,7 +38,7 @@ class LibiApp(MDApp):
         self.screen_manager.add_widget(login_screen)
         self.screen_manager.add_widget(todo_screen)
         self.screen_manager.add_widget(self.home_screen)
-        self.screen_manager.current = "todo"
+        # self.screen_manager.current = "todo"
         return self.screen_manager
 
 

@@ -7,8 +7,9 @@ from kivy.uix.popup import Popup
 from kivymd.uix.button.button import MDFillRoundFlatButton
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.dropdownitem import MDDropDownItem  
+from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
 
 from Resources.todo_resources import (
@@ -125,16 +126,17 @@ class AddRowPopup(Popup):
         for widget in widgets_tup:
             main_layout.add_widget(widget)
 
+
 class StatusDropDownItem(MDDropDownItem):
     """
     class for status drop down item
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
-        self.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
-        self.text = 'Status'
 
+        self.pos_hint = {"center_x": 0.5, "center_y": 0.07}
+        # self.status_item.text = "text"
 
 
 class StatusDropDownMenu(MDDropdownMenu):
@@ -145,18 +147,28 @@ class StatusDropDownMenu(MDDropdownMenu):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.drop_down_item = MDDropDownItem()
-        # self.caller = self.drop_down_item
-        self.items = (
 
-            [
-                {"text": "Done", "viewclass": "OneLineListItem", "on_release": lambda x: self.set_item(x)},
-                {"text": "In Progress", "viewclass": "OneLineListItem", "on_release": lambda x: self.set_item(x)},
-                {"text": "Not Started", "viewclass": "OneLineListItem", "on_release": lambda x: self.set_item(x)},
-            ],
-        )
-        # self.width_mult = 4
-        # self.menu.bind(on_release=lambda x: self.set_item(x))
+        self.items = [
+            {
+                "text": "Done",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="Done": self.menu_callback(x),
+            },
+            {
+                "text": "In Progress",
+                "viewclass": "OneLineListItem",
+                "on_release": lambda x="In Progress": self.menu_callback(x),
+            },
+            {
+                "text": "Not Started",
+                "viewclass": "OneLineLis    tItem",
+                "on_release": lambda x="Not Started": self.menu_callback(x),
+            },
+        ]
+
+        self.width_mult=4
+        self.radius=[1, 1, 1, 1,]
+        self.bind()
 
     def set_item(self, text_item):
         """
@@ -164,3 +176,19 @@ class StatusDropDownMenu(MDDropdownMenu):
         """
         self.drop_down_item.set_item(text_item)
         self.menu.dismiss()
+
+
+class ActionBtn(MDFloatingActionButtonSpeedDial):
+    """
+    class for action button
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.data = {
+            "Add": ["plus", "on_release", lambda x: print("Add")],
+            "Edit": ["pencil", "on_release", lambda x: print("Edit")],
+            "Delete": ["delete", "on_release", lambda x: print("Delete")],
+        }
+        self.hint_animation = True
+        self.pos_hint = {"center_x": 0.3, "center_y": 0.07}
